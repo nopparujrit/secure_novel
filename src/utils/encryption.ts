@@ -4,7 +4,7 @@
 
 // This is a mock of the server-side encryption
 // In a real app, we'd use the Web Crypto API with similar parameters as the server
-const ENCRYPTION_KEY = "secure-novel-reader-key";
+const DISPLAY_KEY = "secure-novel-reader-display";
 
 /**
  * Simple XOR encryption/decryption (client-side only, for demonstration)
@@ -17,7 +17,7 @@ export const xorEncryptDecrypt = (text: string): string => {
   let result = "";
   for (let i = 0; i < text.length; i++) {
     // XOR operation with key character
-    const charCode = text.charCodeAt(i) ^ ENCRYPTION_KEY.charCodeAt(i % ENCRYPTION_KEY.length);
+    const charCode = text.charCodeAt(i) ^ DISPLAY_KEY.charCodeAt(i % DISPLAY_KEY.length);
     result += String.fromCharCode(charCode);
   }
   return result;

@@ -15,16 +15,33 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Validate encryption keys
+if (!process.env.ENCRYPTION_KEY || !process.env.ENCRYPTION_IV) {
+  console.error('ERROR: ENCRYPTION_KEY and ENCRYPTION_IV must be defined in environment variables');
+  console.error('For security, the application will not start with default encryption keys');
+  process.exit(1);
+}
+
 // Encryption parameters (ต้องตรงกับที่ใช้ใน importChapters.js)
 const algorithm = 'aes-256-cbc';
 // key ต้องมีความยาว 32 bytes, iv 16 bytes
-const key = Buffer.from(process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef', 'utf8');
-const iv = Buffer.from(process.env.ENCRYPTION_IV || 'abcdef9876543210', 'utf8');
+const key = Buffer.from(process.env.ENCRYPTION_KEY , 'utf8');
+const iv = Buffer.from(process.env.ENCRYPTION_IV , 'utf8');
+// Validate key lengths
+if (key.length !== 32) {
+  console.error(`ERROR: ENCRYPTION_KEY must be exactly 32 bytes (currently ${key.length} bytes)`);
+  process.exit(1);
+}
+
+if (iv.length !== 16) {
+  console.error(`ERROR: ENCRYPTION_IV must be exactly 16 bytes (currently ${iv.length} bytes)`);
+  process.exit(1);
+}
 // เลือกวิธี normalization ผ่าน environment variable (ค่าเริ่มต้นเป็น 'NFD')
 const normalizationMethod = process.env.NORMALIZATION_METHOD || 'NFD';
 
 // MongoDB connection setup (ปรับให้เข้ากับ environment ของคุณ)
-const uri = 'mongodb://localhost:27017';
+const uri = process.env.MONGODB_URI ;
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 // Function to decrypt content
