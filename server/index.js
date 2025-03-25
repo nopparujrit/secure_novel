@@ -136,10 +136,9 @@ app.listen(PORT, async () => {
       .find({}, { projection: { chapter: 1, _id: 0 } })
       .sort({ chapter: 1 })
       .toArray();
-    res.json(chapters);
+    console.log(chapters);
   } catch (error) {
     console.error('Error fetching chapters:', error);
-    res.status(500).json({ error: 'Failed to fetch chapters' });
   }
   console.log(`Server running on port ${PORT}`);
 });
