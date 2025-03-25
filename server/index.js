@@ -8,7 +8,16 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://secure-novel.vercel.app', // Add your Vercel domain
+    'https://secure-novel-git-main-nopparujs-projects-17f85434.vercel.app',
+    'secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' // Add preview URLs if needed
+  ],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 // Validate encryption keys
 if (!process.env.ENCRYPTION_KEY || !process.env.ENCRYPTION_IV) {
