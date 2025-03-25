@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'secure-novel-2.vercel.app',
-    'http://localhost:3000',
     'secure-novel-2-git-main-nopparujs-projects-17f85434.vercel.app',
     'secure-novel-2-417v4pftt-nopparujs-projects-17f85434.vercel.app',
     'https://secure-novel.vercel.app', 

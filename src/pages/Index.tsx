@@ -16,11 +16,9 @@ const Index = () => {
       try {
         setLoading(true);
         
-        // Fetch metadata
         const novelMetadata = await getNovelMetadata();
         setMetadata(novelMetadata);
         
-        // Fetch chapters
         const allChapters = await getAllChapters();
         setChapters(allChapters.map(c => c.chapter));
         

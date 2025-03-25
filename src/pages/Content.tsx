@@ -21,7 +21,6 @@ const Content = () => {
       try {
         setLoading(true);
         
-        // Parse chapter number
         const chapterNumber = parseInt(chapterParam || "1");
         
         if (isNaN(chapterNumber)) {
@@ -30,23 +29,19 @@ const Content = () => {
           return;
         }
         
-        // Fetch metadata
         const novelMetadata = await getNovelMetadata();
         setMetadata(novelMetadata);
         
-        // Fetch chapters
         const chapters = await getAllChapters();
         const chapterNumbers = chapters.map(c => c.chapter);
         setAllChapters(chapterNumbers);
         
-        // Validate chapter exists
         if (!chapterNumbers.includes(chapterNumber)) {
           toast.error("Chapter not found");
           navigate("/");
           return;
         }
         
-        // Fetch chapter content
         const chapterData = await getChapter(chapterNumber);
         console.log(chapterData);
         setChapter(chapterData);

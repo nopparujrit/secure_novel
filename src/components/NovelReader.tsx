@@ -20,10 +20,9 @@ const NovelReader = ({ chapter, allChapters }: NovelReaderProps) => {
     prev: null,
     next: null,
   });
-  // Font size state with localStorage persistence
   const [fontSize, setFontSize] = useState<number>(() => {
     const savedFontSize = localStorage.getItem('novel-font-size');
-    return savedFontSize ? parseInt(savedFontSize) : 18; // Default font size is 18px
+    return savedFontSize ? parseInt(savedFontSize) : 18; 
   });
   useEffect(() => {
     const fetchAdjacentChapters = async () => {
@@ -34,7 +33,6 @@ const NovelReader = ({ chapter, allChapters }: NovelReaderProps) => {
     fetchAdjacentChapters();
   }, [chapter.chapter]);
 
-    // Save font size to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('novel-font-size', fontSize.toString());
   }, [fontSize]);
@@ -52,13 +50,13 @@ const NovelReader = ({ chapter, allChapters }: NovelReaderProps) => {
   };
 
   const increaseFontSize = () => {
-    if (fontSize < 32) { // Maximum font size limit
+    if (fontSize < 32) { 
       setFontSize(prev => prev + 2);
     }
   };
 
   const decreaseFontSize = () => {
-    if (fontSize > 12) { // Minimum font size limit
+    if (fontSize > 12) { 
       setFontSize(prev => prev - 2);
     }
   };

@@ -14,7 +14,6 @@ const ChapterSelector = ({ chapters, currentChapter }: ChapterSelectorProps) => 
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
