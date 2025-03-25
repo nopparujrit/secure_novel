@@ -1,20 +1,35 @@
 
+/**
+ * Utility for copy protection
+ */
 
+/**
+ * Initialize copy protection measures
+ */
 export const initCopyProtection = (): void => {
+  // Disable selection
   disableSelection();
   
+  // Disable keyboard shortcuts for copy
   disableCopyShortcuts();
   
+  // Add copy prevention styles
   addCopyPreventionStyles();
   
+  // Handle clipboard events
   handleClipboardEvents();
   
+  // Disable drag and drop
   disableDragAndDrop();
 };
 
+/**
+ * Disable text selection
+ */
 const disableSelection = (): void => {
   document.body.classList.add("unselectable");
   
+  // Override getSelection to return empty selection
   const originalGetSelection = window.getSelection;
   window.getSelection = function() {
     const selection = originalGetSelection.apply(this);
@@ -25,9 +40,12 @@ const disableSelection = (): void => {
   };
 };
 
-
+/**
+ * Disable keyboard shortcuts related to copy
+ */
 const disableCopyShortcuts = (): void => {
   document.addEventListener("keydown", (e) => {
+    // Disable Ctrl+C, Ctrl+X, Ctrl+P, Ctrl+S
     if (
       (e.ctrlKey || e.metaKey) &&
       (e.key === "c" || e.key === "x" || e.key === "s" || e.key === "p" || e.key === "a")
@@ -36,6 +54,7 @@ const disableCopyShortcuts = (): void => {
       console.log("Copy shortcut blocked");
     }
     
+    // Disable PrintScreen
     if (e.key === "PrintScreen") {
       e.preventDefault();
       console.log("PrintScreen blocked");
@@ -43,6 +62,9 @@ const disableCopyShortcuts = (): void => {
   });
 };
 
+/**
+ * Add CSS styles that prevent copy
+ */
 const addCopyPreventionStyles = (): void => {
   const style = document.createElement("style");
   style.innerHTML = `
@@ -84,6 +106,9 @@ const addCopyPreventionStyles = (): void => {
   document.head.appendChild(style);
 };
 
+/**
+ * Handle clipboard events to prevent copy
+ */
 const handleClipboardEvents = (): void => {
   document.addEventListener("copy", (e) => {
     if (isProtectedElement(e.target as HTMLElement)) {
@@ -107,6 +132,9 @@ const handleClipboardEvents = (): void => {
   });
 };
 
+/**
+ * Disable drag and drop
+ */
 const disableDragAndDrop = (): void => {
   document.addEventListener("dragstart", (e) => {
     if (isProtectedElement(e.target as HTMLElement)) {
@@ -123,10 +151,13 @@ const disableDragAndDrop = (): void => {
   });
 };
 
-
+/**
+ * Check if element is protected content
+ */
 const isProtectedElement = (element: HTMLElement | null): boolean => {
   if (!element) return false;
   
+  // Check if element is or is contained within .novel-content
   return (
     element.classList.contains("novel-content") ||
     element.classList.contains("novel-char") ||
@@ -134,14 +165,19 @@ const isProtectedElement = (element: HTMLElement | null): boolean => {
   );
 };
 
+/**
+ * Observer to detect and handle DOM changes that might enable copy
+ */
 export const startDOMObserver = (): void => {
   const observer = new MutationObserver((mutations) => {
+    // Re-apply protection to any new or modified elements
     for (const mutation of mutations) {
       if (mutation.type === "childList") {
         mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === 1) { 
+          if (node.nodeType === 1) { // Element node
             const element = node as HTMLElement;
             if (element.classList.contains("novel-content")) {
+              // Re-apply protection to new novel content
               element.classList.add("unselectable");
             }
           }

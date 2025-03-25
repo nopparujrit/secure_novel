@@ -15,6 +15,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
+    // Detect browser devtools
     const devToolsDetector = () => {
       const widthThreshold = window.outerWidth - window.innerWidth > 160;
       const heightThreshold = window.outerHeight - window.innerHeight > 160;
@@ -27,6 +28,7 @@ const App = () => {
       return false;
     };
 
+    // Disable right click
     const disableRightClick = (e: MouseEvent) => {
       e.preventDefault();
       toast("Right-click is disabled for content protection.", {
@@ -34,9 +36,11 @@ const App = () => {
       });
     };
 
+    // Add event listeners
     window.addEventListener("resize", devToolsDetector);
     document.addEventListener("contextmenu", disableRightClick);
 
+    // Clean up
     return () => {
       window.removeEventListener("resize", devToolsDetector);
       document.removeEventListener("contextmenu", disableRightClick);
