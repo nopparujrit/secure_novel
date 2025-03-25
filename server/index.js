@@ -7,29 +7,26 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors({
   origin: [
-    'http://localhost:3000',
     'secure-novel-2.vercel.app',
+    'http://localhost:3000',
     'secure-novel-2-git-main-nopparujs-projects-17f85434.vercel.app',
     'secure-novel-2-417v4pftt-nopparujs-projects-17f85434.vercel.app',
-    'https://secure-novel.vercel.app', // Add your Vercel domain
+    'https://secure-novel.vercel.app', 
     'https://secure-novel-git-main-nopparujs-projects-17f85434.vercel.app',
-    'secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' // Add preview URLs if needed
+    'secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' 
   ],
   methods: ['GET', 'POST'],
   credentials: true
 }));
 app.use(express.json());
-// Validate encryption keys
 if (!process.env.ENCRYPTION_KEY || !process.env.ENCRYPTION_IV) {
   console.error('ERROR: ENCRYPTION_KEY and ENCRYPTION_IV must be defined in environment variables');
   console.error('For security, the application will not start with default encryption keys');
   process.exit(1);
 }
 
-// MongoDB Connection
 const uri = process.env.MONGODB_URI ;
 const client = new MongoClient(uri);
 
@@ -43,7 +40,6 @@ async function connectDB() {
     process.exit(1);
   }
 }
-// Encryption settings
 const algorithm = 'aes-256-cbc';
 const key = Buffer.from(process.env.ENCRYPTION_KEY , 'utf8');
 const iv = Buffer.from(process.env.ENCRYPTION_IV , 'utf8');
@@ -56,7 +52,6 @@ if (iv.length !== 16) {
   console.error(`ERROR: ENCRYPTION_IV must be exactly 16 bytes (currently ${iv.length} bytes)`);
   process.exit(1);
 }
-// Encryption function
 function encrypt(text) {
   try {
     const cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -69,7 +64,6 @@ function encrypt(text) {
   }
 }
 
-// Decryption function
 function decrypt(encryptedText) {
   try {
     if (!encryptedText) {
@@ -87,7 +81,6 @@ function decrypt(encryptedText) {
   }
 }
 
-// API Routes
 app.get('/api/chapters', async (req, res) => {
   try {
     const db = await connectDB();
@@ -107,7 +100,6 @@ app.get('/api/chapters/:chapterNumber', async (req, res) => {
     const chapterNumber = parseInt(req.params.chapterNumber);
     
     const db = await connectDB();
-    // Get specific chapter
     const chapter = await db.collection('chapters').findOne(
       { chapter: chapterNumber },
       { projection: { _id: 0 } }
@@ -117,9 +109,7 @@ app.get('/api/chapters/:chapterNumber', async (req, res) => {
       return res.status(404).json({ error: 'Chapter not found' });
     }
     
-    // Decrypt the content before sending
     const decryptedContent = decrypt(chapter.content);
-    //console.log(decryptedContent);
     if (!decryptedContent) {
       return res.status(500).json({ error: 'Failed to decrypt chapter content' });
     }
@@ -139,7 +129,6 @@ app.get('/api/novel/metadata', async (req, res) => {
     const db = await connectDB();
     const chaptersCount = await db.collection('chapters').countDocuments();
     
-    // You can customize this with real metadata from your database
     const metadata = {
       totalChapters: chaptersCount,
       title: "Secure Novel",
@@ -154,7 +143,6 @@ app.get('/api/novel/metadata', async (req, res) => {
   }
 });
 
-// Start server
 app.listen(PORT, async () => {
   try {
     const db = await connectDB();
