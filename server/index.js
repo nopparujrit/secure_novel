@@ -11,6 +11,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     'http://localhost:3000',
+    'secure-novel-2.vercel.app',
+    'secure-novel-2-git-main-nopparujs-projects-17f85434.vercel.app',
+    'secure-novel-2-417v4pftt-nopparujs-projects-17f85434.vercel.app',
     'https://secure-novel.vercel.app', // Add your Vercel domain
     'https://secure-novel-git-main-nopparujs-projects-17f85434.vercel.app',
     'secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' // Add preview URLs if needed
