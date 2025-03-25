@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/novels';
+const uri = process.env.MONGODB_URI ;
 const client = new MongoClient(uri);
 
 async function connectDB() {
@@ -129,6 +129,17 @@ app.get('/api/novel/metadata', async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  try {
+    const db = await connectDB();
+    const chapters = await db.collection('chapters')
+      .find({}, { projection: { chapter: 1, _id: 0 } })
+      .sort({ chapter: 1 })
+      .toArray();
+    res.json(chapters);
+  } catch (error) {
+    console.error('Error fetching chapters:', error);
+    res.status(500).json({ error: 'Failed to fetch chapters' });
+  }
   console.log(`Server running on port ${PORT}`);
 });
