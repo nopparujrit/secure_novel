@@ -10,6 +10,12 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+// Validate encryption keys
+if (!process.env.ENCRYPTION_KEY || !process.env.ENCRYPTION_IV) {
+  console.error('ERROR: ENCRYPTION_KEY and ENCRYPTION_IV must be defined in environment variables');
+  console.error('For security, the application will not start with default encryption keys');
+  process.exit(1);
+}
 
 // MongoDB Connection
 const uri = process.env.MONGODB_URI ;
@@ -27,9 +33,17 @@ async function connectDB() {
 }
 // Encryption settings
 const algorithm = 'aes-256-cbc';
-const key = Buffer.from(process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef', 'utf8');
-const iv = Buffer.from(process.env.ENCRYPTION_IV || 'abcdef9876543210', 'utf8');
+const key = Buffer.from(process.env.ENCRYPTION_KEY , 'utf8');
+const iv = Buffer.from(process.env.ENCRYPTION_IV , 'utf8');
+if (key.length !== 32) {
+  console.error(`ERROR: ENCRYPTION_KEY must be exactly 32 bytes (currently ${key.length} bytes)`);
+  process.exit(1);
+}
 
+if (iv.length !== 16) {
+  console.error(`ERROR: ENCRYPTION_IV must be exactly 16 bytes (currently ${iv.length} bytes)`);
+  process.exit(1);
+}
 // Encryption function
 function encrypt(text) {
   try {

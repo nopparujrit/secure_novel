@@ -2,6 +2,7 @@ import { encryptText, decryptText } from "../utils/encryption";
 import { toast } from "sonner";
 import axios from "axios";
 
+
 // Interfaces for novel data
 export interface Chapter {
   chapter: number;
@@ -16,7 +17,11 @@ export interface NovelMetadata {
 }
 
 // API base URL
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || process.env.API_BASE_URL;
+
+if (!API_BASE_URL) {
+  console.error('API_BASE_URL is not defined in environment variables');
+}
 
 /**
  * Get metadata about the novel
