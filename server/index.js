@@ -21,13 +21,14 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
 if (!process.env.ENCRYPTION_KEY || !process.env.ENCRYPTION_IV) {
   console.error('ERROR: ENCRYPTION_KEY and ENCRYPTION_IV must be defined in environment variables');
   console.error('For security, the application will not start with default encryption keys');
   process.exit(1);
 }
 
-const uri = process.env.MONGODB_URI ;
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 async function connectDB() {
@@ -40,9 +41,11 @@ async function connectDB() {
     process.exit(1);
   }
 }
+
 const algorithm = 'aes-256-cbc';
-const key = Buffer.from(process.env.ENCRYPTION_KEY , 'utf8');
-const iv = Buffer.from(process.env.ENCRYPTION_IV , 'utf8');
+const key = Buffer.from(process.env.ENCRYPTION_KEY, 'utf8');
+const iv = Buffer.from(process.env.ENCRYPTION_IV, 'utf8');
+
 if (key.length !== 32) {
   console.error(`ERROR: ENCRYPTION_KEY must be exactly 32 bytes (currently ${key.length} bytes)`);
   process.exit(1);
@@ -52,6 +55,7 @@ if (iv.length !== 16) {
   console.error(`ERROR: ENCRYPTION_IV must be exactly 16 bytes (currently ${iv.length} bytes)`);
   process.exit(1);
 }
+
 function encrypt(text) {
   try {
     const cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -73,7 +77,6 @@ function decrypt(encryptedText) {
     const decipher = crypto.createDecipheriv(algorithm, key, iv);
     let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
-    //console.log(decrypted);
     return decrypted;
   } catch (error) {
     console.error('Decryption error:', error);
@@ -109,14 +112,9 @@ app.get('/api/chapters/:chapterNumber', async (req, res) => {
       return res.status(404).json({ error: 'Chapter not found' });
     }
     
-    const decryptedContent = decrypt(chapter.content);
-    if (!decryptedContent) {
-      return res.status(500).json({ error: 'Failed to decrypt chapter content' });
-    }
-    
     res.json({
       chapter: chapter.chapter,
-      content: decryptedContent
+      content: chapter.content
     });
   } catch (error) {
     console.error('Error fetching chapter:', error);
@@ -140,6 +138,27 @@ app.get('/api/novel/metadata', async (req, res) => {
   } catch (error) {
     console.error('Error fetching metadata:', error);
     res.status(500).json({ error: 'Failed to fetch metadata' });
+  }
+});
+
+app.post('/api/decrypt', (req, res) => {
+  try {
+    const { encryptedContent } = req.body;
+    
+    if (!encryptedContent) {
+      return res.status(400).json({ error: 'No encrypted content provided' });
+    }
+
+    const decryptedContent = decrypt(encryptedContent);
+    
+    if (decryptedContent === null) {
+      return res.status(400).json({ error: 'Decryption failed' });
+    }
+
+    res.json({ decryptedContent });
+  } catch (error) {
+    console.error('Error in decrypt endpoint:', error);
+    res.status(500).json({ error: 'Server error during decryption' });
   }
 });
 
