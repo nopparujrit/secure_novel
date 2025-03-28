@@ -14,10 +14,10 @@ export interface NovelMetadata {
   lastUpdated: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || process.env.API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
-if (!API_BASE_URL) {
-  console.error('API_BASE_URL is not defined in environment variables');
+if (!import.meta.env.VITE_API_BASE_URL) {
+  console.warn('VITE_API_BASE_URL is not defined in environment variables, falling back to localhost');
 }
 
 export const getNovelMetadata = async (): Promise<NovelMetadata> => {
@@ -45,6 +45,7 @@ export const getAllChapters = async (): Promise<{ chapter: number }[]> => {
 export const getChapter = async (chapterNumber: number): Promise<Chapter | null> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/chapters/${chapterNumber}`);
+    console.log(API_BASE_URL);
     const chapter = response.data;
     
     const decrypted = await decryptContent(chapter.content);
