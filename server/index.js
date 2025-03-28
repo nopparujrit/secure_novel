@@ -2,6 +2,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
 const crypto = require('crypto');
+const { CommandSeparator } = require('cmdk');
 require('dotenv').config();
 
 const app = express();
@@ -9,13 +10,13 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: [
-    'secure-novel-2.vercel.app',
+    'https://secure-novel-2.vercel.app',
     'http://localhost:3000',
-    'secure-novel-2-git-main-nopparujs-projects-17f85434.vercel.app',
-    'secure-novel-2-417v4pftt-nopparujs-projects-17f85434.vercel.app',
+    'https://secure-novel-2-git-main-nopparujs-projects-17f85434.vercel.app',
+    'https://secure-novel-2-417v4pftt-nopparujs-projects-17f85434.vercel.app',
     'https://secure-novel.vercel.app', 
     'https://secure-novel-git-main-nopparujs-projects-17f85434.vercel.app',
-    'secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' 
+    'https://secure-novel-bpg8zp37e-nopparujs-projects-17f85434.vercel.app' 
   ],
   methods: ['GET', 'POST'],
   credentials: true
@@ -150,6 +151,7 @@ app.post('/api/decrypt', (req, res) => {
     }
 
     const decryptedContent = decrypt(encryptedContent);
+    console.log(decryptedContent);
     
     if (decryptedContent === null) {
       return res.status(400).json({ error: 'Decryption failed' });
