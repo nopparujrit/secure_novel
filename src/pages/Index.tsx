@@ -45,7 +45,7 @@ const Index = () => {
           transition={{ duration: 0.4 }}
         >
           <h1 className="text-4xl font-semibold tracking-tight mb-3">
-            {metadata?.title || "Secure Novel Reader"}
+            {metadata?.title || "Secure Novel"}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A novel reading platform with enhanced security, preventing unauthorized copying of content while providing a beautiful reading experience.

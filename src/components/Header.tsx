@@ -29,7 +29,7 @@ const Header = ({ metadata, currentChapter, showBack = false }: HeaderProps) => 
           )}
           <div>
             <h1 className="text-xl font-medium tracking-tight">
-              {metadata?.title || "Secure Novel Reader"}
+              {metadata?.title || "Secure Novel"}
             </h1>
             {metadata && (
               <p className="text-sm text-muted-foreground">
