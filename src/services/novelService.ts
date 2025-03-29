@@ -53,7 +53,7 @@ export const getChapter = async (chapterNumber: number): Promise<Chapter | null>
       toast.error("Failed to decrypt chapter content");
       return null;
     }
-    
+    console.log(decrypted);
     return {
       chapter: chapter.chapter,
       content: decrypted

@@ -111,7 +111,7 @@ app.get('/api/chapters/:chapterNumber', async (req, res) => {
     if (!chapter) {
       return res.status(404).json({ error: 'Chapter not found' });
     }
-    
+    console.log(chapter.content);
     res.json({
       chapter: chapter.chapter,
       content: chapter.content
