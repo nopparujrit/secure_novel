@@ -1,4 +1,6 @@
-## You can visit my web site on ...
+## You can visit my website on https://secure-novel.vercel.app/
+
+Utilize MongoDB Atlas for data storage, deploy the backend on Railway, and host the frontend on Vercel.
 
 The only requirement is having Node.js & npm installed
 
