@@ -62,23 +62,58 @@ This project implements a secure system for storing and displaying novel content
   - **Disabling the context menu**.
   - **Blocking drag and drop actions**.
 
-### 6. **Visual Representation of Data Flow**
+# Secure Novel Reader Project
+
+## Overview
+This project implements a secure system for storing and displaying novel content while protecting it from unauthorized access and copying. Below is an analysis of the data flow and encryption/decryption points within the codebase.
+
+## Data Flow & Security Analysis
+
+### 1. **Import Flow**
 ```
-[Text Files]
-    ↓ (importChapters.js)
-[Encryption] → [MongoDB]
-    ↓
-[Server API]
-    ↓ (Encrypted Data)
-[Client Request]
-    ↓
-[Server Decryption]
-    ↓ (Decrypted Data)
-[Protected Display]
+[Novel Text Files (.txt)]
+         ↓
+[importChapters.js]
+         ↓
+[Encryption Process]
+    (AES-256-CBC)
+    - ENCRYPTION_KEY (32 bytes)
+    - ENCRYPTION_IV (16 bytes)
+         ↓
+[MongoDB Database]
+(Stores encrypted chapters)
 ```
 
-## Conclusion
-This project ensures **robust security** for novel content by implementing **AES-256 encryption**, **server-side decryption**, and **client-side protections** to prevent unauthorized access or copying. These measures create a secure and seamless reading experience for users.
+### 2. **Client Interaction Flow**
+```
+[Client/Browser]
+    1. User navigates to chapter
+    ↓
+[Frontend]
+    2. Makes API request
+    ↓
+[Server]
+    3. Receives chapter request
+    ↓
+[MongoDB Query]
+    4. Fetches chapter
+    ↓
+[Server Decryption] ) (This is a simplified version of Server Decryption. In real process, the server sends encrypted data to frontend, and the frontend makes an API request to the server to decrypt that data.)
+    5. Decrypts content
+    ↓
+[Server Response]
+    6. Sends decrypted content
+    ↓
+[Client Processing]
+    7. Renders chapter
+    ↓
+[Security Measures]
+    8. Applies protection
+    ↓
+[User Display]
+    9. Protected readable content
+```
+
 
 
 
