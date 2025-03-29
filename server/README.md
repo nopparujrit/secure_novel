@@ -18,6 +18,8 @@ Create a `.env` file in the server directory with:
 ```
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/novels  (or MongoDB atlas )
+ENCRYPTION_KEY=0123456789abcdef0123456789abcdef
+ENCRYPTION_IV=abcdef9876543210
 ```
 
 ## Running the Server
