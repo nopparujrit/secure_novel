@@ -34,7 +34,6 @@ const client = new MongoClient(uri);
 async function connectDB() {
   try {
     await client.connect();
-    console.log('Connected to MongoDB');
     return client.db('novels');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -111,7 +110,6 @@ app.get('/api/chapters/:chapterNumber', async (req, res) => {
     if (!chapter) {
       return res.status(404).json({ error: 'Chapter not found' });
     }
-    console.log(chapter.content);
     res.json({
       chapter: chapter.chapter,
       content: chapter.content
@@ -169,7 +167,6 @@ app.listen(PORT, async () => {
       .find({}, { projection: { chapter: 1, _id: 0 } })
       .sort({ chapter: 1 })
       .toArray();
-    console.log(chapters);
   } catch (error) {
     console.error('Error fetching chapters:', error);
   }

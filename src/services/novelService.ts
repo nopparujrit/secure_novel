@@ -45,7 +45,6 @@ export const getAllChapters = async (): Promise<{ chapter: number }[]> => {
 export const getChapter = async (chapterNumber: number): Promise<Chapter | null> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/chapters/${chapterNumber}`);
-    console.log(API_BASE_URL);
     const chapter = response.data;
     
     const decrypted = await decryptContent(chapter.content);
@@ -53,7 +52,6 @@ export const getChapter = async (chapterNumber: number): Promise<Chapter | null>
       toast.error("Failed to decrypt chapter content");
       return null;
     }
-    console.log(decrypted);
     return {
       chapter: chapter.chapter,
       content: decrypted
