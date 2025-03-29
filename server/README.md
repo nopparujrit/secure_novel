@@ -1,4 +1,4 @@
-# Novel Reader Backend Server
+# Secure Novel Backend Server
 
 This is the backend server for the Secure Novel Reader application. It connects to MongoDB to fetch novel data.
 
@@ -8,7 +8,7 @@ This is the backend server for the Secure Novel Reader application. It connects 
 2. Create a database named "novels"
 3. Create a collection named "chapters" with documents in this format:
    ```
-   { "chapter": 1, "content": "Novel content here..." }
+   { "chapter": 1, "content": "Encrypted Novel content...." }
    ```
 
 ## Environment Variables
@@ -17,7 +17,7 @@ Create a `.env` file in the server directory with:
 
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/novels
+MONGODB_URI=mongodb://localhost:27017/novels  (or MongoDB atlas )
 ```
 
 ## Running the Server
