@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getChapter, getAllChapters, getNovelMetadata, NovelMetadata, Chapter } from "@/services/novelService";
@@ -43,7 +42,6 @@ const Content = () => {
         }
         
         const chapterData = await getChapter(chapterNumber);
-        console.log(chapterData);
         setChapter(chapterData);
         
         setLoading(false);
