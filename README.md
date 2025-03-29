@@ -21,7 +21,7 @@ ENCRYPTION_IV=your_16_byte_iv
 NORMALIZATION_METHOD=NFD
 ```
 
-5. Start the development server:
+Start the development server:
 ```bash
 npm run dev
 ```
