@@ -1,28 +1,5 @@
 ## You can visit my website on https://secure-novel.vercel.app/
 
-The only requirement is having Node.js & npm installed
-
-Follow these steps:
-
-```sh
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
-# 3: Install the necessary dependencies.
-npm i
-
-```
-Create `.env.local` file in the root directory with:
-```
-VITE_API_BASE_URL="http://localhost:5000/api"
-ENCRYPTION_KEY=your_32_byte_encryption_key
-ENCRYPTION_IV=your_16_byte_iv
-NORMALIZATION_METHOD=NFD
-```
-Start the development server:
-```bash
-npm run dev
-```
-
 # Secure Novel Reader Project
 
 ## Overview
